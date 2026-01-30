@@ -1,21 +1,19 @@
-import { useEffect, useState } from 'react'; 
-import './App.css'
-function App() { 
- const [message, setMessage] = useState("...Loading..."); 
- async function fetchData() { 
- const result = await fetch('http://localhost:3000/api/hello'); 
- const data = await result.json(); 
- console.log("result: ", result); 
- console.log("data:", data); 
- setMessage(data.message); 
- } 
- useEffect(()=>{ 
- fetchData(); 
- },[]); 
- return ( 
- <div>
- Message: {message}
- </div>
- ) 
-} 
-export default App
+import { Routes, Route } from "react-router-dom";
+import { Items } from "./Items";
+import { ItemDetail } from "./ItemDetail";
+import TestApi from "./TestApi";
+
+function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<Items />} />
+      <Route path="/items" element={<Items />} />      
+      <Route path="/items/:id" element={<ItemDetail />} />
+      
+      {/* Existing test route */}
+      <Route path="/test_api" element={<TestApi />} />
+    </Routes>
+  );
+}
+
+export default App;
