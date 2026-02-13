@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export function Users() {
+    const navigate = useNavigate();
     const [users, setUsers] = useState([]);
     const [page, setPage] = useState(1);
     const [error, setError] = useState("");
@@ -186,7 +188,28 @@ export function Users() {
                 <tbody>
                     {users.map((user, index) => (
                         <tr key={index} style={{ borderBottom: "1px solid #ddd" }}>
-                            <td style={{ padding: "12px" }}>{user.username}</td>
+                            <td style={{ padding: "12px", display: "flex", alignItems: "center", gap: "10px" }}>
+                                {user.profileImage ? (
+                                    <img
+                                        src={`http://localhost:3000${user.profileImage}`}
+                                        alt=""
+                                        style={{
+                                            width: "32px", height: "32px", borderRadius: "50%",
+                                            objectFit: "cover", border: "2px solid #e0e0e0", flexShrink: 0
+                                        }}
+                                    />
+                                ) : (
+                                    <div style={{
+                                        width: "32px", height: "32px", borderRadius: "50%",
+                                        background: "linear-gradient(135deg, #667eea, #764ba2)",
+                                        display: "flex", alignItems: "center", justifyContent: "center",
+                                        color: "white", fontSize: "0.8rem", fontWeight: "bold", flexShrink: 0
+                                    }}>
+                                        {(user.firstname?.[0] || user.username?.[0] || "?").toUpperCase()}
+                                    </div>
+                                )}
+                                {user.username}
+                            </td>
                             <td>{user.email}</td>
                             <td>{user.firstname || "-"}</td>
                             <td>{user.lastname || "-"}</td>
@@ -203,6 +226,7 @@ export function Users() {
                                 </span>
                             </td>
                             <td>
+                                <button onClick={() => navigate(`/users/${user._id}/profile`)} style={{ color: "#6c63ff", background: "none", border: "none", cursor: "pointer", marginRight: "10px" }}>Profile</button>
                                 <button onClick={() => startEdit(user)} style={{ color: "#007bff", background: "none", border: "none", cursor: "pointer", marginRight: "10px" }}>Edit</button>
                                 <button onClick={() => onDelete(user._id)} style={{ backgroundColor: "#ff4d4d", color: "white", border: "none", padding: "5px 10px", borderRadius: "4px", cursor: "pointer" }}>Delete</button>
                             </td>
